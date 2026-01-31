@@ -4,37 +4,40 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+// Use CORS to allow your Vercel frontend to talk to this backend
+app.use(cors({
+  origin: ["http://localhost:3000", "https://gopratle-backend-pyqn.onrender.com"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('DB Error:', err));
 
-// Schema
 const RequirementSchema = new mongoose.Schema({
   eventName: String,
-  eventType: String,
   date: Date,
   location: String,
-  venue: String,
-  hiringType: { type: String, enum: ['Planner', 'Performer', 'Crew'] },
-  specificDetails: mongoose.Schema.Types.Mixed // Flexible object for different types
+  category: String,
+  categoryDetails: Object
 }, { timestamps: true });
 
 const Requirement = mongoose.model('Requirement', RequirementSchema);
 
-// API Route
 app.post('/api/requirements', async (req, res) => {
   try {
     const newReq = new Requirement(req.body);
     await newReq.save();
-    res.status(201).json({ message: "Requirement saved successfully!", data: newReq });
+    res.status(201).json({ success: true, data: newReq });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ success: false, error: error.message });
   }
 });
 
+// Render requires the app to listen on 0.0.0.0
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`erver on port ${PORT}`));

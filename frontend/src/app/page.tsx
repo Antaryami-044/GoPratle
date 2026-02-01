@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function RequirementForm() {
   const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false); // New: Loading state for better UX
+  const [loading, setLoading] = useState(false); // New
   const [formData, setFormData] = useState({
     eventName: '', eventType: '', date: '', location: '', venue: '',
     category: '', categoryDetails: {} as Record<string, any>
@@ -16,12 +16,11 @@ export default function RequirementForm() {
     }));
   };
 
-  // Humanized: Added simple validation before moving steps
   const canContinueStep1 = formData.eventName && formData.location && formData.date;
 
   const submitForm = async () => {
     setLoading(true);
-    // Best Practice: Always use the env variable for deployment
+    // env variable for deployment
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
     
     try {
@@ -32,16 +31,16 @@ export default function RequirementForm() {
       });
 
       if (response.ok) {
-        alert('🚀 Requirement Posted Successfully!');
-        // Smooth reset after success
+        alert('Requirement Posted Successfully!');
+        // reset after success
         setFormData({ eventName: '', eventType: '', date: '', location: '', venue: '', category: '', categoryDetails: {} });
         setStep(1); 
       } else {
         const errorData = await response.json();
-        alert(`❌ Failed: ${errorData.message || 'Server error'}`);
+        alert(`Failed: ${errorData.message || 'Server error'}`);
       }
     } catch (err) {
-      alert('❌ Error: Could not connect to the server. Please check your internet or if the backend is live.');
+      alert('Error: Could not connect to the server. Please check your internet or if the backend is live.');
     } finally {
       setLoading(false);
     }

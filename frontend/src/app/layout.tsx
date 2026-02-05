@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GoPratle",
+  title: "Designer",
   description: "Assignment Flow",
 };
 
@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <nav className="bg-white border-b p-4">
           <div className="max-w-7xl mx-auto font-bold text-blue-600 text-xl">
-            GoPratle Portal
+            Designer Page
           </div>
         </nav>
         {children}

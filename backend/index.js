@@ -18,6 +18,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('DB Error:', err));
 
+
 const RequirementSchema = new mongoose.Schema({
   eventName: String,
   date: Date,
@@ -25,6 +26,7 @@ const RequirementSchema = new mongoose.Schema({
   category: String,
   categoryDetails: Object
 }, { timestamps: true });
+
 
 const Requirement = mongoose.model('Requirement', RequirementSchema);
 
